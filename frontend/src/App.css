@@ -1,0 +1,33 @@
+/* resize 4 corners - div */
+.react-flow__resize-control {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+/* controller */
+.react-flow__controls {
+  background-color: black !important;
+  border: 1px solid white !important;
+
+}
+
+.react-flow__controls-button {
+  background-color: black !important;
+  color: white !important;
+  border: none !important;
+  border-bottom: none !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: #1a1a1a !important;
+}
+
+/* Hide scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

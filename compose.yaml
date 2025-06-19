@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  ollama:
+    build: ./ollama
+    ports:
+    - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+
+  backend:
+    build: ./backend
+    ports:
+    - 8080:8080
+    depends_on:
+      - ollama
+
+  frontend:
+    build: ./frontend
+    ports: 
+    - 5173:5173
+    depends_on:
+      - ollama
+      - backend
+
+volumes:
+  ollama_data:
