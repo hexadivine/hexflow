@@ -31,3 +31,8 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide react-flow watermark */
+.react-flow__panel.react-flow__attribution {
+  display: none;
+}
