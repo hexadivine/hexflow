@@ -39,22 +39,29 @@ function NodeStructure({ color, setColor, id, children, selected }) {
 
     return (
         <div
-            className="h-full flex flex-col cursor-default bg-black"
+            className="flex flex-col h-full bg-black cursor-default"
             onWheelCapture={(e) => {
                 e.stopPropagation();
             }}
         >
-            <NodeResizer color={color} isVisible={selected} minWidth={600} minHeight={80} />
+            <NodeResizer
+                color={color}
+                isVisible={selected}
+                minWidth={600}
+                minHeight={80}
+                maxHeight={500}
+                maxWidth={800}
+            />
 
             {/* Node Structure */}
             <div
-                className="flex cursor-move justify-between p-2 items-center gap-5 drag-handle__custom px-3"
+                className="flex items-center justify-between gap-5 p-2 px-3 cursor-move drag-handle__custom"
                 style={{
                     background: color,
                     color: color === "red" || color === "blue" ? "white" : "black",
                 }}
             >
-                <div className="flex items-center gap-2  ">
+                <div className="flex items-center gap-2 ">
                     <span>{heading.icon}</span>
                     <span>{heading.name} : </span>
                     <input
@@ -62,23 +69,23 @@ function NodeStructure({ color, setColor, id, children, selected }) {
                         type="text"
                         name=""
                         id=""
-                        className="bg-white opacity-50 w-100 rounded-2xl py-1 px-5 text-black"
+                        className="px-5 py-1 text-black bg-white opacity-50 w-100 rounded-2xl"
                     />
                 </div>
                 <div className="flex gap-2">
-                    <label className="cursor-pointer relative">
+                    <label className="relative cursor-pointer">
                         <IoColorPaletteOutline />
                         <input
                             type="color"
                             value={color}
                             onChange={(e) => setColor(e.target.value)}
-                            className="absolute left-0 top-0 opacity-0 w-6 h-6 cursor-pointer"
+                            className="absolute top-0 left-0 w-6 h-6 opacity-0 cursor-pointer"
                         />
                     </label>
                     <IoCloseCircle className="cursor-pointer" onClick={deleteNode} />
                 </div>
             </div>
-            <div style={{ border: `2px solid ${color}` }} className="flex-grow overflow-auto p-2">
+            <div style={{ border: `2px solid ${color}` }} className="flex-grow p-2 overflow-auto">
                 {children}
             </div>
 
