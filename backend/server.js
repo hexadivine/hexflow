@@ -15,11 +15,11 @@ wss.on("connection", (ws) => {
     ws.on("message", (msg) => {
         const cmd = msg.toString();
         console.log("Received message: " + cmd);
-        shell.write(cmd + " && echo '||=-EOF-=||' \n");
+        shell.write(cmd + "; echo '||=-EOF-=||' \n");
     });
 
     shell.on("data", (data) => {
-        const output = data.replace(" && echo '||=-EOF-=||' ", "");
+        const output = data.replace("; echo '||=-EOF-=||' ", "");
         ws.send(output);
     });
 
