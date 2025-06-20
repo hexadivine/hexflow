@@ -19,8 +19,9 @@ function AI({ color, selected }) {
             aiThinkingRef.current.scrollTo(0, aiThinkingRef.current.scrollHeight + 10000);
     }, [aiChat]);
 
-    async function askAI(prompt) {
-        setAIChat((prev) => ({ ...prev, [prompt]: { response: "", thinking: "" } }));
+    async function askAI(prompt, title = "") {
+        const placeholderPrompt = title === "" ? prompt : title;
+        setAIChat((prev) => ({ ...prev, [placeholderPrompt]: { response: "", thinking: "" } }));
         setIsLoading(true);
 
         const response = await fetch("http://localhost:11434/api/generate", {
@@ -29,7 +30,7 @@ function AI({ color, selected }) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                model: "deepseek-r1",
+                model: "qwen3",
                 prompt: `${prompt}`,
                 message: [
                     {
@@ -70,17 +71,17 @@ function AI({ color, selected }) {
                 if (isThinking && json.response) {
                     setAIChat((prev) => ({
                         ...prev,
-                        [prompt]: {
-                            ...prev[prompt],
-                            thinking: prev[prompt]["thinking"] + json.response,
+                        [placeholderPrompt]: {
+                            ...prev[placeholderPrompt],
+                            thinking: prev[placeholderPrompt]["thinking"] + json.response,
                         },
                     }));
                 } else if (json.response) {
                     setAIChat((prev) => ({
                         ...prev,
-                        [prompt]: {
-                            ...prev[prompt],
-                            response: prev[prompt]["response"] + json.response,
+                        [placeholderPrompt]: {
+                            ...prev[placeholderPrompt],
+                            response: prev[placeholderPrompt]["response"] + json.response,
                         },
                     }));
                 }
@@ -100,23 +101,25 @@ function AI({ color, selected }) {
 
     useEffect(() => {
         console.log(leftNodeData);
-        if (leftNodeData) {
-            setAiPrompt("Fetching data from last node");
-            askAI(leftNodeData.data.output + "\n What should I do next?");
+        if (leftNodeData && !leftNodeData.data.fetchingOutput) {
+            askAI(
+                leftNodeData.data.output + "\n What should I do next?",
+                "Fetch content from the connected node...#" + (Object.keys(aiChat).length + 1)
+            );
         }
     }, [leftNodeData]);
 
     return (
-        <div className="bg-black text-white p-4 max-h-100 overflow-auto max-w-200 hide-scrollbar">
-            <div className="mb-15">
+        <div className="p-4 overflow-auto text-white bg-black max-w-200 max-h-200 hide-scrollbar">
+            <div className="mb-16">
                 {Object.keys(aiChat).map((prompt, index) => (
                     <div key={index}>
-                        <p className="border-1 rounded-2xl p-5">{prompt}</p>
+                        <p className="p-5 border-1 rounded-2xl">{prompt}</p>
                         <div
-                            className="whitespace-pre-wrap prose prose-invert m-3 p-3 rounded-lg"
+                            className="p-3 m-3 prose whitespace-pre-wrap rounded-lg prose-invert"
                             style={{ backgroundColor: color }}
                         >
-                            {isLoading && <p className=" mb-2">Thinking...</p>}
+                            {isLoading && <p className="mb-2 ">Thinking...</p>}
                             <div
                                 className="!text-[14px] h-30 overflow-scroll  p-3  rounded-lg bg-white text-black opacity-40"
                                 ref={aiThinkingRef}
@@ -131,12 +134,12 @@ function AI({ color, selected }) {
                 ))}
             </div>
 
-            <div className="mt-4 fixed bottom-1 pb-5 left-5 right-5 bg-black">
+            <div className="fixed pb-5 mt-4 bg-black bottom-1 left-5 right-5">
                 <textarea
                     ref={focusInputRef}
                     rows={1}
                     type="text"
-                    className="p-2 w-full text-white border-2 border-white"
+                    className="w-full p-2 text-white border-2 border-white"
                     value={aiPrompt}
                     onChange={(e) => setAiPrompt(e.target.value)}
                     onKeyDown={(e) => {
