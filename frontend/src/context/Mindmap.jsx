@@ -1,5 +1,5 @@
-import { useReactFlow } from "@xyflow/react";
-import { useContext } from "react";
+import { useNodes, useReactFlow } from "@xyflow/react";
+import { useContext, useEffect } from "react";
 import { useState, createContext } from "react";
 
 export const MindmapContext = createContext();
@@ -11,17 +11,25 @@ export const useMindmapContext = () => {
 export const MindmapContextProvider = ({ children }) => {
     const [mindmap, setMindmap] = useState("test");
     const { setEdges, setNodes } = useReactFlow();
+    const nodes = useNodes();
 
     function addNewNode(sourceNodeId) {
-        const newNodeId = Date.now();
+        if (nodes.length === 0) return;
+
+        const oldNode = nodes.find((node) => node.id === sourceNodeId);
+        const position = { x: oldNode.position.x + 650, y: oldNode.position.y - 100 };
+
+        const newNodeId = Date.now().toString();
         const newNode = {
             id: newNodeId,
-            position: { x: 250, y: 250 },
+            position,
             data: { label: `New node ${newNodeId}` },
-            type: "terminalNode",
+            type: "notesNode",
         };
 
-        setNodes((nds) => nds.concat(newNode));
+        setNodes((nds) => {
+            return nds.concat(newNode);
+        });
 
         const newEdge = {
             id: `edge_${sourceNodeId}-${newNodeId}`,
@@ -30,7 +38,12 @@ export const MindmapContextProvider = ({ children }) => {
             // animated: true,
         };
 
-        setEdges((eds) => eds.concat(newEdge));
+        // setEdges((eds) => eds.concat(newEdge));
+        // console.log("edge");
+        setEdges((nds) => {
+            // console.log(nds);
+            return nds.concat(newEdge);
+        });
     }
 
     return (
