@@ -49,8 +49,8 @@ function NodeStructure({ color, setColor, id, children, selected }) {
                 isVisible={selected}
                 minWidth={600}
                 minHeight={80}
-                maxHeight={500}
-                maxWidth={800}
+                maxHeight={700}
+                maxWidth={700}
             />
 
             {/* Node Structure */}
