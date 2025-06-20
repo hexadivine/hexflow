@@ -4,37 +4,21 @@ import { useEffect } from "react";
 import { Handle, Position, NodeResizer, useReactFlow } from "@xyflow/react";
 
 import { IoColorPaletteOutline } from "react-icons/io5";
-import { IoTerminalOutline } from "react-icons/io5";
-import { GrNotes } from "react-icons/gr";
-import { BsRobot } from "react-icons/bs";
 
 import { IoCloseCircle } from "react-icons/io5";
+import { getHeadingMetadata } from "../../utils/nodeStructureHeadingMetadata";
 
 function NodeStructure({ color, setColor, id, children, selected }) {
     const [heading, setHeading] = useState({});
     const { setNodes } = useReactFlow();
+    // const [title, setTitle] = useState('');
 
     const deleteNode = () => {
         setNodes((nodes) => nodes.filter((node) => node.id !== id));
     };
 
     useEffect(() => {
-        if (children.type.name === "Terminal") {
-            setHeading({
-                name: "Terminal",
-                icon: <IoTerminalOutline />,
-            });
-        } else if (children.type.name === "Notes") {
-            setHeading({
-                name: "Notes",
-                icon: <GrNotes />,
-            });
-        } else if (children.type.name === "AI") {
-            setHeading({
-                name: "AI",
-                icon: <BsRobot />,
-            });
-        }
+        setHeading(getHeadingMetadata(children.type.name));
     }, [children]);
 
     return (
@@ -69,7 +53,11 @@ function NodeStructure({ color, setColor, id, children, selected }) {
                         type="text"
                         name=""
                         id=""
-                        className="px-5 py-1 text-black bg-white opacity-50 w-100 rounded-2xl"
+                        className="px-5 py-2 text-sm text-black bg-white opacity-60 w-50 rounded-2xl"
+                        value={heading.title || ""}
+                        onChange={(event) =>
+                            setHeading((prev) => ({ ...prev, title: event.target.value }))
+                        }
                     />
                 </div>
                 <div className="flex gap-2">
