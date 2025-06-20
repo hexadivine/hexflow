@@ -50,6 +50,7 @@ const DnDFlow = () => {
                 x: event.clientX,
                 y: event.clientY,
             });
+
             const newNode = {
                 id: getId(),
                 type,
@@ -71,7 +72,7 @@ const DnDFlow = () => {
 
     return (
         <div className="dndflow">
-            <div className="reactflow-wrapper w-full h-screen" ref={reactFlowWrapper}>
+            <div className="w-full h-screen reactflow-wrapper" ref={reactFlowWrapper}>
                 <ReactFlow
                     nodes={nodes}
                     nodeTypes={nodeTypes}
