@@ -63,7 +63,7 @@ function Terminal({ id, command, selected }) {
 
     return (
         <div
-            className="text-white  max-h-full h-100 overflow-scroll w-[inherit] hide-scrollbar "
+            className="max-w-full max-h-full overflow-scroll text-white hide-scrollbar "
             ref={terminalRef}
             onWheelCapture={(e) => {
                 e.stopPropagation();
