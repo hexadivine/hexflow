@@ -1,12 +1,13 @@
 import React from "react";
+import { useState } from "react";
+import { Handle, Position } from "@xyflow/react";
+
 import NodeStructure from "./components/NodeStructure";
 
 import Terminal from "./components/Terminal";
 import Notes from "./components/Notes";
 import AI from "./components/AI";
-
-import { Handle, Position } from "@xyflow/react";
-import { useState } from "react";
+import StartingPoint from "./flow/StartingPoint";
 
 export function TerminalNode({ id, selected, cmd }) {
     const [color, setColor] = useState("green");
@@ -29,11 +30,21 @@ export function NotesNode({ id, selected }) {
 }
 
 export function AINode({ id, selected }) {
-    const [color, setColor] = useState("blue");
+    const [color, setColor] = useState("teal");
 
     return (
         <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
             <AI id={id} color={color} selected={selected} />
+        </NodeStructure>
+    );
+}
+
+export function StartingPointNode({ id, selected }) {
+    const [color, setColor] = useState("#00a100");
+
+    return (
+        <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
+            <StartingPoint id={id} color={color} selected={selected} />
         </NodeStructure>
     );
 }
