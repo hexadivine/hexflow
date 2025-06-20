@@ -7,6 +7,6 @@ until curl http://localhost:11434 > /dev/null; do
     sleep 1
 done
 
-ollama pull deepseek-r1
+ollama pull qwen3
 
 sleep infinity
