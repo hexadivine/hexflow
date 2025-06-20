@@ -10,6 +10,7 @@ function Terminal({ id, command, selected }) {
 
     const [cmd, setCmd] = useState(command || "");
     const [output, setOutput] = useState("");
+    const [fetchingOutput, setFetchingOutput] = useState(false);
 
     const socketRef = useRef(null);
     const terminalRef = useRef(null);
@@ -23,9 +24,15 @@ function Terminal({ id, command, selected }) {
             console.log("Connected to websocket");
         });
         socketRef.current.addEventListener("message", (event) => {
-            console.log("message received");
             const cleanOutput = stripAnsi(event.data);
-            setOutput((prev) => prev + cleanOutput);
+            console.log(cleanOutput.trim());
+            console.log(cleanOutput.trim() === "||=-EOF-=||");
+            if (cleanOutput.trim() === "||=-EOF-=||") {
+                console.log("makes sense");
+                setFetchingOutput(false);
+            } else {
+                setOutput((prev) => prev + cleanOutput);
+            }
         });
 
         return () => {
@@ -33,7 +40,14 @@ function Terminal({ id, command, selected }) {
         };
     }, []);
 
-    // addNewNode(id);
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            console.log("running onece");
+            addNewNode(id);
+        }, 5000);
+
+        return () => clearTimeout(timeout);
+    }, []);
 
     // useEffect(() => {
     //     // const timeout = setInterval(() => {
@@ -45,6 +59,7 @@ function Terminal({ id, command, selected }) {
 
     function sendCommand() {
         if (socketRef.current.readyState === WebSocket.OPEN) {
+            setFetchingOutput(true);
             socketRef.current.send(cmd);
             setCmd("");
         } else {
@@ -53,9 +68,11 @@ function Terminal({ id, command, selected }) {
     }
 
     useEffect(() => {
+        console.log("fetching - ");
+        console.log(fetchingOutput);
         terminalRef.current.scrollTo(0, terminalRef.current.scrollHeight);
-        updateNodeData(id, { output });
-    }, [output]);
+        updateNodeData(id, { output, fetchingOutput });
+    }, [output, fetchingOutput]);
 
     useEffect(() => {
         if (selected) focusInputRef.current.focus();
