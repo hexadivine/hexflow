@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import {
     connectSocket,
@@ -6,38 +6,22 @@ import {
     onSocketMessage,
     sendCommand,
 } from "../utils/socketClient";
+import { useMindmapContext } from "../../../context/Mindmap";
 
-function StartingPoint({ color }) {
+function StartingPoint({ id, color }) {
     const [targetIPHost, setTargetIPHost] = useState("");
     const [status, setStatus] = useState({ msg: "", error: "" });
     const [output, setOutput] = useState("");
+    const { addNewNode, setTarget } = useMindmapContext();
+
+    const socket = useRef(null);
 
     useEffect(() => {
-        connectSocket();
-
-        onSocketMessage((data) => {
-            // setOutput((prev) => prev + data);
+        socket.current = connectSocket();
+        onSocketMessage(socket.current, (data) => {
             setOutput((prev) => prev + data);
-            if (data.includes("||=-EOF-=||")) {
-                disconnectSocket();
-            }
-            // const pingResp = data.includes("64 bytes from");
-            // if (pingResp) {
-            //     // setOutput(data);
-            //     setStatus((prev) => ({
-            //         msg: prev.msg + "\n[+] Target is up and running!",
-            //         error: false,
-            //     }));
-            //     return () => disconnectSocket();
-            // } else {
-            //     // setOutput("--");
-            //     setStatus((prev) => ({
-            //         msg: prev.msg + "\n[+] Target is not unavailable!",
-            //         error: true,
-            //     }));
-            // }
         });
-        return () => disconnectSocket();
+        return () => disconnectSocket(socket.current);
     }, []);
 
     function isValidIP(ip) {
@@ -79,22 +63,23 @@ function StartingPoint({ color }) {
 
         // host pattern checking
         if (!validTarget()) return false;
+        setTarget(targetIPHost);
 
         // check if host is up
-        sendCommand(`ping -c 1 ${targetIPHost} | grep from `);
+        sendCommand(socket.current, `ping -c 1 ${targetIPHost} | grep from `);
     }
 
     useEffect(() => {
         if (!output) return;
-        if (!output.includes("||=-EOF-=||")) return;
-        console.log(output);
+        if (status.msg.includes("Target is")) return;
 
         if (output.includes("64 bytes from")) {
             setStatus((prev) => ({
                 msg: prev.msg + "[+] Target is up and running" + "\n",
                 error: false,
             }));
-        } else {
+            addNewNode(id, "nmapScanNode", { x: 600, y: 150 });
+        } else if (output.includes("||=-EOF-=||")) {
             setStatus((prev) => ({
                 msg: prev.msg + "[-] Target is unreachable" + "\n",
                 error: true,
