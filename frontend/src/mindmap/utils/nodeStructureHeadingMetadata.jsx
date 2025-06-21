@@ -24,7 +24,13 @@ export const getHeadingMetadata = (name) => {
             return {
                 name: "Starting Point",
                 icon: <FaSuperpowers />,
-                title: "Initial Scan",
+                title: "Initial scan",
+            };
+        case "NmapScan":
+            return {
+                name: "Nmap Scan",
+                icon: <FaSuperpowers />,
+                title: "Finding open ports",
             };
     }
 };
