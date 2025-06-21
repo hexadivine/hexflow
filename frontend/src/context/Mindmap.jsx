@@ -9,22 +9,23 @@ export const useMindmapContext = () => {
 };
 
 export const MindmapContextProvider = ({ children }) => {
-    const [mindmap, setMindmap] = useState("test");
+    const [target, setTarget] = useState("");
+
     const { setEdges, setNodes } = useReactFlow();
     const nodes = useNodes();
 
-    function addNewNode(sourceNodeId) {
+    function addNewNode(sourceNodeId, type, position) {
         if (nodes.length === 0) return;
 
         const oldNode = nodes.find((node) => node.id === sourceNodeId);
-        const position = { x: oldNode.position.x + 650, y: oldNode.position.y - 100 };
+        position = { x: oldNode.position.x + position.x, y: oldNode.position.y + position.y };
 
         const newNodeId = Date.now().toString();
         const newNode = {
             id: newNodeId,
             position,
             data: { label: `New node ${newNodeId}` },
-            type: "notesNode",
+            type,
         };
 
         setNodes((nds) => {
@@ -47,7 +48,7 @@ export const MindmapContextProvider = ({ children }) => {
     }
 
     return (
-        <MindmapContext.Provider value={{ mindmap, setMindmap, addNewNode }}>
+        <MindmapContext.Provider value={{ target, setTarget, addNewNode }}>
             {children}
         </MindmapContext.Provider>
     );
