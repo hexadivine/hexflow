@@ -1,8 +1,6 @@
-let socket;
 import stripAnsi from "strip-ansi";
-
 export function connectSocket(url = "ws://localhost:8080") {
-    socket = new WebSocket(url);
+    const socket = new WebSocket(url);
 
     socket.addEventListener("open", () => {
         console.log("Websocket: Connection established");
@@ -15,9 +13,10 @@ export function connectSocket(url = "ws://localhost:8080") {
     socket.addEventListener("error", () => {
         console.log("Websocket: An unexpected error occurred ");
     });
+    return socket;
 }
 
-export function sendCommand(cmd, callback = () => {}) {
+export function sendCommand(socket, cmd, callback = () => {}) {
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(cmd);
         callback();
@@ -26,7 +25,7 @@ export function sendCommand(cmd, callback = () => {}) {
     }
 }
 
-export function onSocketMessage(callback) {
+export function onSocketMessage(socket, callback) {
     if (socket) {
         socket.addEventListener("message", (event) => {
             callback(stripAnsi(event.data));
@@ -34,6 +33,6 @@ export function onSocketMessage(callback) {
     }
 }
 
-export function disconnectSocket() {
+export function disconnectSocket(socket) {
     if (socket) return socket.close();
 }
