@@ -21,19 +21,22 @@ function Terminal({ id, command, selected }) {
     const terminalRef = useRef(null);
     const focusInputRef = useRef(null);
 
+    const socket = useRef(null);
+
     useEffect(() => {
-        connectSocket();
-        onSocketMessage((data) => {
+        socket.current = connectSocket();
+        onSocketMessage(socket.current, (data) => {
             const cleanOutput = stripAnsi(data);
-            // console.log(cleanOutput.trim());
+            console.log(cleanOutput.trim());
+            // console.log()
             if (cleanOutput.trim() === "||=-EOF-=||") {
                 setFetchingOutput(false);
             } else {
-                setOutput((prev) => prev + cleanOutput);
+                setOutput((prev) => prev + cleanOutput.replace("||=-EOF-=||", ""));
             }
         });
 
-        return () => disconnectSocket();
+        return () => disconnectSocket(socket.current);
     }, []);
 
     // useEffect(() => {
@@ -73,7 +76,7 @@ function Terminal({ id, command, selected }) {
                     onChange={(event) => setCmd(event.target.value)}
                     onKeyDown={(event) =>
                         event.key === "Enter"
-                            ? sendCommand(cmd, () => {
+                            ? sendCommand(socket.current, cmd, () => {
                                   setFetchingOutput(true);
                                   setCmd("");
                               })
