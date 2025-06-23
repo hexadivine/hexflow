@@ -147,7 +147,10 @@ function AI({ color, selected }) {
                     value={aiPrompt}
                     onChange={(e) => setAiPrompt(e.target.value)}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter" && aiPrompt.trim() !== "") askAI(aiPrompt);
+                        if (e.key === "Enter" && aiPrompt.trim() !== "") {
+                            askAI(aiPrompt);
+                            setAiPrompt("");
+                        }
                     }}
                     placeholder="Ask AI something..."
                 />
