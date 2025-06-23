@@ -110,7 +110,6 @@ function StartingPoint({ id, color }) {
                         status.error ? "text-red-500 font-bold" : "text-white"
                     }`}
                 >
-                    {console.log(status.msg)}
                     {status.msg}
                 </pre>
             ) : null}
