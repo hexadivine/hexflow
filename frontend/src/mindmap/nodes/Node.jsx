@@ -10,6 +10,9 @@ import AI from "./components/AI";
 import StartingPoint from "./flow/StartingPoint";
 import NmapScan from "./flow/NmapScan";
 import ScanDirs from "./flow/ScanDirs";
+import ScanSubDomains from "./flow/ScanSubDomains";
+import { portToService } from "./utils/portToService";
+import MapIPToHost from "./flow/MapIPToHost";
 
 export function TerminalNode({ id, selected, cmd }) {
     const [color, setColor] = useState("green");
@@ -62,11 +65,31 @@ export function NmapScanNode({ id, selected }) {
 }
 
 export function ScanDirsNode({ id, selected }) {
-    const [color, setColor] = useState("#fff");
+    const [color, setColor] = useState(portToService(80).color);
 
     return (
         <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
             <ScanDirs id={id} color={color} selected={selected} />
+        </NodeStructure>
+    );
+}
+
+export function ScanSubDomainsNode({ id, selected }) {
+    const [color, setColor] = useState(portToService(80).color);
+
+    return (
+        <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
+            <ScanSubDomains id={id} color={color} selected={selected} />
+        </NodeStructure>
+    );
+}
+
+export function MapIPToHostNode({ id, selected }) {
+    const [color, setColor] = useState("yellow");
+
+    return (
+        <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
+            <MapIPToHost id={id} color={color} selected={selected} />
         </NodeStructure>
     );
 }
