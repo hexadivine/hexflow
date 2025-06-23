@@ -20,6 +20,7 @@ wss.on("connection", (ws) => {
 
     shell.on("data", (data) => {
         const output = data.replace("; echo '||=-EOF-=||' ", "");
+        // console.log(data);
         ws.send(output);
     });
 
