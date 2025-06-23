@@ -9,6 +9,7 @@ import Notes from "./components/Notes";
 import AI from "./components/AI";
 import StartingPoint from "./flow/StartingPoint";
 import NmapScan from "./flow/NmapScan";
+import ScanDirs from "./flow/ScanDirs";
 
 export function TerminalNode({ id, selected, cmd }) {
     const [color, setColor] = useState("green");
@@ -56,6 +57,16 @@ export function NmapScanNode({ id, selected }) {
     return (
         <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
             <NmapScan id={id} color={color} selected={selected} />
+        </NodeStructure>
+    );
+}
+
+export function ScanDirsNode({ id, selected }) {
+    const [color, setColor] = useState("#fff");
+
+    return (
+        <NodeStructure color={color} setColor={setColor} id={id} selected={selected}>
+            <ScanDirs id={id} color={color} selected={selected} />
         </NodeStructure>
     );
 }
