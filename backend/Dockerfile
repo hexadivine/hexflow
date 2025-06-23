@@ -1,7 +1,8 @@
 FROM kalilinux/kali-rolling
 
-RUN apt update && apt -y install nmap ffuf nodejs npm
-RUN apt install -y iputils-ping
+RUN apt update && apt install -y iputils-ping nodejs npm wordlists nmap ffuf dirb
+RUN apt install -y curl seclists
+# RUN apt update && apt install -y iputils-ping nodejs npm kali-linux-default
 
 COPY package*.json .
 RUN npm install .
