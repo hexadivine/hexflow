@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { portToService } from "../utils/portToService";
+import { useMindmapContext } from "../../../context/Mindmap";
 
-function ServiceNode({ data }) {
+function ServiceNode({ id, data }) {
+    const { addNewNode } = useMindmapContext();
+
+    useEffect(() => {
+        if (data && data.port) {
+            const { nextNodeTypes } = portToService(data.port);
+            nextNodeTypes.forEach((nextNodeType, index) =>
+                addNewNode(id, nextNodeType, { x: 500, y: 400 * index })
+            );
+        }
+    }, [data]);
     return (
         <>
             <div
