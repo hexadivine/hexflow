@@ -17,7 +17,7 @@ function NmapScan({ id, color }) {
     const { target, addNewNode } = useMindmapContext();
 
     useEffect(() => {
-        let yPosition = -200;
+        let yPosition = -100;
 
         socket.current = connectSocket();
         onSocketMessage(socket.current, (data) => {
@@ -30,7 +30,7 @@ function NmapScan({ id, color }) {
                 setPorts((prev) => prev.concat(port));
                 console.log("---port---");
                 console.log(port[0]);
-                addNewNode(id, "serviceNode", { x: 500, y: yPosition }, { port: port[0] });
+                addNewNode(id, "serviceNode", { x: 600, y: yPosition }, { port: port[0] });
                 yPosition += 300;
             }
 
@@ -64,7 +64,7 @@ function NmapScan({ id, color }) {
     }, [ports]);
 
     return (
-        <div className="p-5 rounded-2xl w-100" style={{ background: color }}>
+        <div className="w-full h-full p-5 rounded-2xl" style={{ background: color }}>
             <div className="flex flex-wrap gap-2 mb-3 ">
                 {ports.map((port, index) => (
                     <p key={index} className="px-4 py-2 text-white bg-black rounded-2xl">
@@ -72,7 +72,7 @@ function NmapScan({ id, color }) {
                     </p>
                 ))}
             </div>
-            <pre className="p-3 text-white bg-black rounded-2xl">{status}</pre>
+            <pre className="p-3 mt-auto text-white bg-black rounded-2xl">{status}</pre>
         </div>
     );
 }
