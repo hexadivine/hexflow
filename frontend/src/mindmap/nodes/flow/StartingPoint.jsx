@@ -78,7 +78,9 @@ function StartingPoint({ id, color }) {
                 msg: prev.msg + "[+] Target is up and running" + "\n",
                 error: false,
             }));
-            addNewNode(id, "nmapScanNode", { x: 600, y: 150 });
+
+            addNewNode(id, "mapIPToHostNode", { x: 600, y: -100 });
+            addNewNode(id, "nmapScanNode", { x: 650, y: 100 });
         } else if (output.includes("||=-EOF-=||")) {
             setStatus((prev) => ({
                 msg: prev.msg + "[-] Target is unreachable" + "\n",
