@@ -30,7 +30,25 @@ export const getHeadingMetadata = (name) => {
             return {
                 name: "Nmap Scan",
                 icon: <FaSuperpowers />,
-                title: "Finding open ports",
+                title: "Find open ports",
+            };
+        case "ScanDirs":
+            return {
+                name: "Scan Directories",
+                icon: <FaSuperpowers />,
+                title: "Use FFUF tool to scan dirs",
+            };
+        case "ScanSubDomains":
+            return {
+                name: "Scan Sub Domains",
+                icon: <FaSuperpowers />,
+                title: "Use FFUF tool to scan subdomains",
+            };
+        default:
+            return {
+                name: "Update Name",
+                icon: <FaSuperpowers />,
+                title: "",
             };
     }
 };
