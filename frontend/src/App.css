@@ -36,3 +36,78 @@
 .react-flow__panel.react-flow__attribution {
   display: none;
 }
+
+/* md styling */
+.AIBox h1 {
+  font-size: 2em;
+  border-bottom: 2px solid #0f0;
+  padding-bottom: 0.3em;
+  margin-top: 1em;
+}
+.AIBox h2 {
+  font-size: 1.75em;
+  border-bottom: 1px solid #0f0;
+  padding-bottom: 0.2em;
+  margin-top: 1em;
+}
+.AIBox h3 {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+.AIBox h4, .AIBox h5, .AIBox h6 {
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+.AIBox p {
+  line-height: 1.6;
+  margin: 5px 0;
+  color: #ddd;
+}
+
+.AIBox pre {
+  background-color: #ffffff57;
+  color: rgb(0, 0, 0);
+  padding: 1em;
+  margin-top: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+.AIBox code {
+  background-color: #ffffff96;
+  color: rgb(0, 0, 0);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+}
+
+.AIBox blockquote {
+  border-left: 4px solid #0f0;
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  color: #aaa;
+  background-color: #111;
+  font-style: italic;
+}
+
+.AIBox ul, .AIBox ol {
+  padding-left: 2em;
+  margin: 0 0;
+}
+.AIBox li {
+  margin-bottom: 0.5em;
+}
+
+.AIBox a {
+  color: #0f0;
+  text-decoration: underline;
+}
+.AIBox a:hover {
+  color: #5f5;
+}
+
+.AIBox hr {
+  border: 0;
+  border-top: 2px solid #333;
+}
