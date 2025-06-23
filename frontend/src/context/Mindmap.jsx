@@ -14,17 +14,18 @@ export const MindmapContextProvider = ({ children }) => {
     const { setEdges, setNodes } = useReactFlow();
     const nodes = useNodes();
 
-    function addNewNode(sourceNodeId, type, position) {
+    function addNewNode(sourceNodeId, type, position, data = { label: "custom node" }) {
         if (nodes.length === 0) return;
 
         const oldNode = nodes.find((node) => node.id === sourceNodeId);
         position = { x: oldNode.position.x + position.x, y: oldNode.position.y + position.y };
-
-        const newNodeId = Date.now().toString();
+        console.log("data");
+        console.log(data);
+        const newNodeId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
         const newNode = {
             id: newNodeId,
             position,
-            data: { label: `New node ${newNodeId}` },
+            data,
             type,
         };
 
