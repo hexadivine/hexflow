@@ -8,27 +8,34 @@ import {
 } from "../utils/socketClient";
 import { useMindmapContext } from "../../../context/Mindmap";
 
-function NmapScan({ color }) {
+function NmapScan({ id, color }) {
     const socket = useRef();
     const [ports, setPorts] = useState([]);
     const [status, setStatus] = useState("");
     const [isFetching, setIsFetching] = useState(true);
 
-    const { target } = useMindmapContext();
+    const { target, addNewNode } = useMindmapContext();
 
     useEffect(() => {
+        let yPosition = -200;
+
         socket.current = connectSocket();
         onSocketMessage(socket.current, (data) => {
             // get ports
             const port = data
                 .match(/Discovered open port (\d+)/gm)
                 ?.map((line) => line.match(/\d+/)[0]);
-            if (port) setPorts((prev) => prev.concat(port));
+
+            if (port) {
+                setPorts((prev) => prev.concat(port));
+                console.log("---port---");
+                console.log(port[0]);
+                addNewNode(id, "serviceNode", { x: 500, y: yPosition }, { port: port[0] });
+                yPosition += 300;
+            }
 
             // if ends
-            console.log(data);
             if (data.trim().includes("||=-EOF-=||")) {
-                console.log("hi11");
                 setIsFetching(false);
             }
         });
@@ -36,12 +43,9 @@ function NmapScan({ color }) {
     }, []);
 
     useEffect(() => {
-        // console.log(targetHost);
         if (!target) return;
-        console.log(socket.current);
 
         const timeout = setTimeout(() => {
-            // console.log("hi");
             setStatus("[!] Finding open ports");
             sendCommand(socket.current, "nmap -p- -v -r -T5  " + target);
         }, 3000);
@@ -50,8 +54,6 @@ function NmapScan({ color }) {
     }, [socket, target]);
 
     useEffect(() => {
-        console.log("----");
-        console.log(isFetching);
         if (isFetching === false) {
             setStatus((prev) => prev + "\n[+] Command execution completed!");
         }
