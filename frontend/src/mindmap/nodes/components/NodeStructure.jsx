@@ -23,7 +23,7 @@ function NodeStructure({ color, setColor, id, children, selected }) {
 
     return (
         <div
-            className="flex flex-col h-full bg-black cursor-default"
+            className="flex flex-col h-full bg-black cursor-default max-h-250 max-w-250"
             onWheelCapture={(e) => {
                 e.stopPropagation();
             }}
