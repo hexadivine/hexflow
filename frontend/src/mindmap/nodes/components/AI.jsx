@@ -10,6 +10,8 @@ function AI({ color, selected }) {
     const aiThinkingRef = useRef(null);
     const focusInputRef = useRef(null);
 
+    const [deepthinkFlag, setDeepthinkFlag] = useState(false);
+
     useEffect(() => {
         if (selected) focusInputRef.current.focus();
     }, [selected]);
@@ -31,7 +33,7 @@ function AI({ color, selected }) {
             },
             body: JSON.stringify({
                 model: "qwen3",
-                prompt: `${prompt}`,
+                prompt: `${prompt}. ${deepthinkFlag ? "" : "No thinking."}`,
                 message: [
                     {
                         role: "system",
@@ -110,22 +112,24 @@ function AI({ color, selected }) {
     }, [leftNodeData]);
 
     return (
-        <div className="p-4 overflow-auto text-white bg-black max-w-200 max-h-200 hide-scrollbar">
-            <div className="mb-16">
+        <div className="p-4 overflow-auto text-white bg-black max-w-200 min-w-100 max-h-200 hide-scrollbar">
+            <div className="mb-42">
                 {Object.keys(aiChat).map((prompt, index) => (
                     <div key={index}>
-                        <p className="p-5 border-1 rounded-2xl">{prompt}</p>
+                        <p className="p-5 border-1 rounded-2xl wrap-break-word">{prompt}</p>
                         <div
                             className="p-3 m-3 prose whitespace-pre-wrap rounded-lg prose-invert"
                             style={{ backgroundColor: color }}
                         >
                             {isLoading && <p className="mb-2 ">Thinking...</p>}
-                            <div
-                                className="!text-[14px] h-30 overflow-scroll  p-3  rounded-lg bg-white text-black opacity-40"
-                                ref={aiThinkingRef}
-                            >
-                                {aiChat[prompt].thinking}
-                            </div>
+                            {deepthinkFlag && aiChat[prompt].thinking.trim() !== "" ? (
+                                <div
+                                    className="!text-[14px] h-30 overflow-scroll  p-3  rounded-lg bg-white text-black opacity-40"
+                                    ref={aiThinkingRef}
+                                >
+                                    {aiChat[prompt].thinking}
+                                </div>
+                            ) : null}
                             <div className="mt-5">
                                 <ReactMarkdown>{aiChat[prompt].response}</ReactMarkdown>
                             </div>
@@ -137,16 +141,36 @@ function AI({ color, selected }) {
             <div className="fixed pb-5 mt-4 bg-black bottom-1 left-5 right-5">
                 <textarea
                     ref={focusInputRef}
-                    rows={1}
+                    rows={3}
                     type="text"
                     className="w-full p-2 text-white border-2 border-white"
                     value={aiPrompt}
                     onChange={(e) => setAiPrompt(e.target.value)}
                     onKeyDown={(e) => {
-                        if (e.key === "Enter") askAI(aiPrompt);
+                        if (e.key === "Enter" && aiPrompt.trim() !== "") askAI(aiPrompt);
                     }}
                     placeholder="Ask AI something..."
                 />
+                <div className="flex gap-3 mt-4 cursor-pointer">
+                    <button
+                        className="px-4 py-1 rounded-2xl "
+                        style={{
+                            background: deepthinkFlag ? color : "black",
+                            border: `1px solid ${color}`,
+                        }}
+                        onClick={() => {
+                            setDeepthinkFlag((prev) => !prev);
+                        }}
+                    >
+                        Deepthink
+                    </button>
+                    <button
+                        className="px-4 py-1 rounded-2xl "
+                        style={{ background: "black", border: `1px solid ${color}` }}
+                    >
+                        More features coming soon
+                    </button>
+                </div>
             </div>
         </div>
     );
