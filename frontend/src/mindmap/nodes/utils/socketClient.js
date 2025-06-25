@@ -16,13 +16,15 @@ export function connectSocket(url = "ws://localhost:8080") {
     return socket;
 }
 
-export function sendCommand(socket, cmd, callback = () => {}) {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(cmd);
-        callback();
-    } else {
-        console.log("Websocket: Connection is not established successfully");
-    }
+export function sendCommand(socket, cmd, callback = () => {}, retry = 3) {
+    if (retry)
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(cmd);
+            callback();
+        } else {
+            console.log("Websocket: Connection is not established successfully");
+            setTimeout(() => sendCommand(socket, cmd, callback, retry - 1), 2000);
+        }
 }
 
 export function onSocketMessage(socket, callback) {
