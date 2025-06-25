@@ -11,10 +11,9 @@ import {
     sendCommand,
 } from "../utils/socketClient";
 
-function Terminal({ id, command, selected }) {
+function Terminal({ id, selected, command, nextNodeLogic }) {
     const { updateNodeData } = useReactFlow();
-
-    const [cmd, setCmd] = useState(command || "");
+    const [cmd, setCmd] = useState("");
     const [output, setOutput] = useState("");
     const [fetchingOutput, setFetchingOutput] = useState(false);
 
@@ -25,12 +24,12 @@ function Terminal({ id, command, selected }) {
 
     useEffect(() => {
         socket.current = connectSocket();
-        onSocketMessage(socket.current, (data) => {
-            const cleanOutput = stripAnsi(data);
-            console.log(cleanOutput.trim());
+        onSocketMessage(socket.current, (resp) => {
+            const cleanOutput = stripAnsi(resp);
             // console.log()
             if (cleanOutput.trim() === "||=-EOF-=||") {
                 setFetchingOutput(false);
+                nextNodeLogic && nextNodeLogic(output, id);
             } else {
                 setOutput((prev) => prev + cleanOutput.replace("||=-EOF-=||", ""));
             }
@@ -47,6 +46,17 @@ function Terminal({ id, command, selected }) {
 
     //     return () => clearTimeout(timeout);
     // }, []);
+
+    useEffect(() => {
+        setCmd(command);
+        if (command) {
+            console.log(command);
+            sendCommand(socket.current, command, () => {
+                setFetchingOutput(true);
+                setCmd("");
+            });
+        }
+    }, []);
 
     useEffect(() => {
         terminalRef.current.scrollTo(0, terminalRef.current.scrollHeight);
