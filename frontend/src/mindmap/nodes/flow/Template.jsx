@@ -8,7 +8,7 @@ import {
 } from "../utils/socketClient";
 import { useMindmapContext } from "../../../context/Mindmap";
 
-function Template({ id, color, lineRegEx, wordRegEx, newNodeLogic, cmd, task, setOutput }) {
+function Template({ color, lineRegEx, wordRegEx, newNodeLogic, cmd, task, setOutput }) {
     const socket = useRef();
     const [filteredResults, setFilteredResults] = useState([]);
     const [status, setStatus] = useState("");
@@ -27,9 +27,10 @@ function Template({ id, color, lineRegEx, wordRegEx, newNodeLogic, cmd, task, se
 
             if (filteredResult) {
                 setFilteredResults((prev) => prev.concat(filteredResult));
-                console.log("---filteredResult---");
-                console.log(filteredResult[0]);
-                newNodeLogic && newNodeLogic();
+                // console.log("---filteredResult---");
+                // console.log(filteredResult[0]);
+                console.log(newNodeLogic);
+                newNodeLogic && newNodeLogic(filteredResult[0]);
                 yPosition += 300;
             }
 
@@ -59,7 +60,6 @@ function Template({ id, color, lineRegEx, wordRegEx, newNodeLogic, cmd, task, se
     }, [isFetching]);
 
     useEffect(() => {
-        console.log(filteredResults);
         if (filteredResults) {
             setStatus(`[!] Finding ${task}\n[+] Found ${task} - ${filteredResults.length}`);
         }
