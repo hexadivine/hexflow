@@ -19,8 +19,7 @@ export const MindmapContextProvider = ({ children }) => {
 
         const oldNode = nodes.find((node) => node.id === sourceNodeId);
         position = { x: oldNode.position.x + position.x, y: oldNode.position.y + position.y };
-        console.log("data");
-        console.log(data);
+
         const newNodeId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
         const newNode = {
             id: newNodeId,
@@ -41,9 +40,7 @@ export const MindmapContextProvider = ({ children }) => {
         };
 
         // setEdges((eds) => eds.concat(newEdge));
-        // console.log("edge");
         setEdges((nds) => {
-            // console.log(nds);
             return nds.concat(newEdge);
         });
     }
