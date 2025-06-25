@@ -14,12 +14,16 @@ import ScanSubDomains from "./flow/ScanSubDomains";
 import { portToService } from "./utils/portToService";
 import MapIPToHost from "./flow/MapIPToHost";
 
-export function TerminalNode({ id, selected, cmd }) {
+export function TerminalNode({ id, selected, data }) {
     const [color, setColor] = useState("green");
-
     return (
         <NodeStructure id={id} selected={selected} color={color} setColor={setColor}>
-            <Terminal id={id} command={cmd} selected={selected} />
+            <Terminal
+                id={id}
+                command={data.command}
+                nextNodeLogic={data.nextNodeLogic}
+                selected={selected}
+            />
         </NodeStructure>
     );
 }
