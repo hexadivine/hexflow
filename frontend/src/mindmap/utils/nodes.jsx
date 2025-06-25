@@ -2,8 +2,7 @@ export const initialNodes = [
     {
         id: "1",
         position: { x: 0, y: 0 },
-        data: { cmd: "nmap 1.1.1.1" },
-        type: "startingPoint",
+        type: "startingPointNode",
         dragHandle: ".drag-handle__custom",
     },
     // {
