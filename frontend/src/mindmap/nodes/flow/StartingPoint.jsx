@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
+
+import { isValidIP, isValidHost, isValidTarget } from "../utils/validateTarget";
 import {
     connectSocket,
     disconnectSocket,
@@ -24,23 +26,7 @@ function StartingPoint({ id, color }) {
         return () => disconnectSocket(socket.current);
     }, []);
 
-    function isValidIP(ip) {
-        const ipRegExp =
-            /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)){3}$/;
-        return ipRegExp.test(ip);
-    }
-
-    function isValidHost(host) {
-        if (host.split(".").length === 4 && !isValidIP(host)) {
-            return false;
-        }
-
-        const hostRegExp = /^([a-z0-9-]+\.)+[a-z0-9-]+$/i;
-        return hostRegExp.test(host);
-    }
-
     function validTarget() {
-        setStatus({ msg: "[!] Checking target...", error: false });
         if (!isValidIP(targetIPHost) && !isValidHost(targetIPHost)) {
             setStatus((prev) => ({
                 msg: prev.msg + "\n[-] Invalid target provided!",
@@ -62,7 +48,17 @@ function StartingPoint({ id, color }) {
         setOutput("");
 
         // host pattern checking
-        if (!validTarget()) return false;
+        setStatus({ msg: "[!] Checking target...", error: false });
+        if (!isValidTarget(targetIPHost))
+            return setStatus((prev) => ({
+                msg: prev.msg + "\n[-] Invalid target provided!",
+                error: true,
+            }));
+
+        setStatus((prev) => ({
+            msg: prev.msg + "\n[+] Valid target provided!\n[!] Checking if the target is up...\n\n",
+            error: false,
+        }));
         setTarget(targetIPHost);
 
         // check if host is up
@@ -79,7 +75,7 @@ function StartingPoint({ id, color }) {
                 error: false,
             }));
 
-            addNewNode(id, "mapIPToHostNode", { x: 600, y: -100 });
+            if (isValidIP(targetIPHost)) addNewNode(id, "mapIPToHostNode", { x: 600, y: -100 });
             addNewNode(id, "nmapScanNode", { x: 650, y: 100 });
         } else if (output.includes("||=-EOF-=||")) {
             setStatus((prev) => ({
