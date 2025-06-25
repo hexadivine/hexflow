@@ -1,8 +1,11 @@
 FROM kalilinux/kali-rolling
 
-RUN apt update && apt install -y iputils-ping nodejs npm wordlists nmap ffuf dirb
-RUN apt install -y curl seclists
-# RUN apt update && apt install -y iputils-ping nodejs npm kali-linux-default
+RUN apt update && apt install -y kali-linux-default
+RUN apt install -y curl seclists iputils-ping nodejs npm 
+RUN cd /opt \
+    && git clone https://github.com/arthaud/git-dumper.git \
+    && cd git-dumper \
+    && pip3 install . --break-system-packages
 
 COPY package*.json .
 RUN npm install .
