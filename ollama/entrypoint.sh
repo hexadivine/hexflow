@@ -7,6 +7,6 @@ until curl http://localhost:11434 > /dev/null; do
     sleep 1
 done
 
-ollama pull qwen3
+ollama run qwen3:0.6b
 
 sleep infinity
