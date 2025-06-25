@@ -44,6 +44,12 @@ export const getHeadingMetadata = (name) => {
                 icon: <FaSuperpowers />,
                 title: "Use FFUF tool to scan subdomains",
             };
+        case "ServiceNode":
+            return {
+                name: "Find Hostname",
+                icon: <FaSuperpowers />,
+                title: "",
+            };
         default:
             return {
                 name: "Update Name",
