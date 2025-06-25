@@ -15,7 +15,7 @@ export const nodeTypes = {
     terminalNode: TerminalNode,
     aiNode: AINode,
     notesNode: NotesNode,
-    startingPoint: StartingPointNode,
+    startingPointNode: StartingPointNode,
     mapIPToHostNode: MapIPToHostNode,
     nmapScanNode: NmapScanNode,
     serviceNode: ServiceNode,
