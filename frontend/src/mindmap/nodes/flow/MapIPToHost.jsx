@@ -10,8 +10,6 @@ function MapIPToHost({ id, color }) {
 
     useEffect(() => {
         if (output) {
-            console.log("op");
-            console.log(output);
             const domainLine = output?.match(/\[\!\].*/gm);
             if (domainLine && domainLine.length > 0) {
                 setTarget(domainLine[0].replace("[!] ", "").trim());
