@@ -14,6 +14,7 @@ services:
     - 8080:8080
     depends_on:
       - ollama
+    privileged: true
 
   frontend:
     build: ./frontend
