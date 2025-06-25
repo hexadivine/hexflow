@@ -32,7 +32,7 @@ function AI({ color, selected }) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                model: "qwen3",
+                model: "qwen3:0.6b",
                 prompt: `${prompt}. ${deepthinkFlag ? "" : "No thinking."}`,
                 message: [
                     {
@@ -44,6 +44,8 @@ function AI({ color, selected }) {
                 stream: true,
             }),
         });
+
+        console.log(response);
 
         setAiPrompt("");
 
@@ -112,7 +114,7 @@ function AI({ color, selected }) {
     }, [leftNodeData]);
 
     return (
-        <div className="p-4 overflow-auto text-white bg-black max-w-200 min-w-100 max-h-200 hide-scrollbar">
+        <div className="p-4 overflow-auto text-white bg-black AIBox max-w-200 min-w-100 max-h-200 hide-scrollbar">
             <div className="mb-42">
                 {Object.keys(aiChat).map((prompt, index) => (
                     <div key={index}>
