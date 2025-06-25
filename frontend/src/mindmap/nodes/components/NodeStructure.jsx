@@ -23,7 +23,7 @@ function NodeStructure({ color, setColor, id, children, selected }) {
 
     return (
         <div
-            className="flex flex-col h-full bg-black cursor-default max-h-250 max-w-250"
+            className="flex flex-col h-full bg-black cursor-default max-h-200 max-w-200"
             onWheelCapture={(e) => {
                 e.stopPropagation();
             }}
@@ -31,10 +31,10 @@ function NodeStructure({ color, setColor, id, children, selected }) {
             <NodeResizer
                 color={color}
                 isVisible={selected}
-                minWidth={600}
+                minWidth={500}
                 minHeight={80}
                 maxHeight={700}
-                maxWidth={700}
+                maxWidth={600}
             />
 
             {/* Node Structure */}
