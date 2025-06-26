@@ -17,7 +17,7 @@ function ScanSubDomains({ id, color }) {
             lineRegEx={/.*\[Status:.*\]/gm}
             wordRegEx={/.*/}
             newNodeLogic={"a"}
-            cmd={`ffuf -u http://${target}/ -H "Host: FUZZ.${target}" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -fc 301,302`}
+            cmd={`ffuf -u http://${target}/ -H "Host: FUZZ.${target}" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -fc 301`}
             color={color}
         />
     );
