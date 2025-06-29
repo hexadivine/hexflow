@@ -1,8 +1,11 @@
-# Hexflow : Automated Penetration Testing Tool with Artificial Intelligence
+# HEXFLOW : Automated Penetration Testing Mind Map with Artificial Intelligence
 
-![Hexflow Demo](./assets/hexflow.gif)
+![HEXFLOW_DEMO](./assets/hexflow.gif)
 
-Hexflow is a full-stack application designed for penetration testing, and visualization. It leverages a modern React frontend, a Node.js backend, and integrates with AI and security tools for advanced analysis.
+Hexflow is a full-stack application designed for penetration testing, and visualization. It leverages a modern React frontend, a Node.js backend, and integrates with AI and security tools for advanced analysis. This project is inspired by the below mindmap I made by solving various CTFs, HTB machines and certifications like PJPT.
+
+https://xmind.ai/kI1wEPg5  
+![HEXFLOW_MINDMAP](./assets/hexflow_mindmap.png)
 
 ## Project Structure
 
