@@ -1,4 +1,4 @@
-# HEXFLOW : Automated Penetration Testing Mind Map with AI & Automation
+# HEXFLOW : Automated Penetration Testing Mind Map with Artificial Intelligence
 
 ![HEXFLOW_DEMO](./assets/hexflow.gif)
 
